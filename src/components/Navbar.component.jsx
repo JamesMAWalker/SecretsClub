@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,7 +10,7 @@ import Switch from '@material-ui/core/Switch';
 import SearchIcon from '@material-ui/icons/Search';
 
 import { ThemeContext } from '../contexts/Theme.context';
-import { withLanguageContext } from '../contexts/Language.context';
+import { LanguageContext } from '../contexts/Language.context';
 
 import styles from '../styles/navbar.styles';
 
@@ -20,18 +20,16 @@ const emoji = {
   日本語: '🍥'
 };
 
-class Navbar extends Component {
-  static contextType = ThemeContext;
-  render() {
-    const { classes, languageContext } = this.props;
-    const { isDarkMode, toggleDarkMode } = this.context;
+function Navbar({ classes }) {
+  const { language } = useContext(LanguageContext);
+  const { isDarkMode, toggleDarkMode } = useContext(ThemeContext);
 
-    return (
-      <div className={classes.root}>
+  return (
+    <div className={classes.root}>
         <AppBar position='static' color={isDarkMode ? 'default' : 'primary'}>
           <Toolbar>
             <IconButton className={classes.menuButton} color='inherit'>
-              <span className={classes.emoji}>{emoji[languageContext.language]}</span>
+              <span className={classes.emoji}>{emoji[language]}</span>
               <Typography
                 className={classes.title}
                 variant='h6'
@@ -57,8 +55,7 @@ class Navbar extends Component {
           </Toolbar>
         </AppBar>
       </div>
-    );
-  }
+  )
 }
 
-export default withLanguageContext(withStyles(styles)(Navbar));
+export default withStyles(styles)(Navbar);
